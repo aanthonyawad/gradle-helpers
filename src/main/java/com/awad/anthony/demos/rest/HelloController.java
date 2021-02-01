@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 	@GetMapping(path = "/")
 	public String hello() {
-		return "hello Dr Pascale";
+		return "hello Dr Pascale & JEAN PAUL BFFFFFFFFFFFF AND FFFFFFFFFFFFF";
 	}
 }

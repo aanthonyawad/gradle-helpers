@@ -1,0 +1,58 @@
+pipeline{
+    agent any
+    stages{
+        stage('Git-Checkout'){
+            steps{
+                echo "Checking out from Git Repo";
+                git 'https://github.com/aanthonyawad/gradle-helpers.git'
+            }
+        }
+
+        stage('Build'){
+            steps{
+                echo "Building out the checked out project!";
+                sh 'chmod +x gradlew'
+                sh 'gradle clean build'
+            }
+        }
+
+        stage('Unit-Test'){
+            steps{
+                echo "Running JUnit Tests";
+            }
+        }
+
+        stage('Quality Gate'){
+            steps{
+                echo "Running Quality Gate";
+            }
+        }
+        stage('Deploy'){
+            steps{
+                s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'bucketanthonyawad', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'eu-west-3', showDirectlyInBrowser: false, sourceFile: '*/', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'AnthonyAwad', userMetadata: []
+                echo "Pass!";
+            }
+        }
+        stage('Launch'){
+            steps{
+                build 'reload_war_with_ssh'
+                echo "Launched!";
+            }
+        }
+    }
+    post{
+        always{
+            echo "This will always run"
+        }
+        success{
+            echo "This will run only if successfull"
+        }
+        unstable{
+            echo "This will run only if the run was marked as unstable"
+        }
+        changed{
+            echo "This will Run only if the state of the pipeline has changed"
+        }
+    }
+}
+

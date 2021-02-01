@@ -1,0 +1,8 @@
+#remove old war file
+rm /opt/tomcat/apache-tomcat-9.0.41/webapps/hello.war
+#get new war file from s3 bucket
+wget wget https://bucketanthonyawad.s3.amazonaws.com/build/libs/demos-0.0.1-SNAPSHOT.war
+#make the  downloaded war executable
+chmod +x demos-0.0.1-SNAPSHOT.war
+#cut war to tomcat
+mv demos-0.0.1-SNAPSHOT.war  /opt/tomcat/apache-tomcat-9.0.41/webapps/hello.war
