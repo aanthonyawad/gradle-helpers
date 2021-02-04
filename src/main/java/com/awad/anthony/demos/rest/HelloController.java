@@ -16,4 +16,5 @@ public class HelloController {
 	public String name(@PathVariable(value = "name") String name) {
 		return "hello "+ name;
 	}
+	
 }
